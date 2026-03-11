@@ -174,7 +174,7 @@ const Home: FC = () => {
         const successMessage = `🎉 **Payment Successful!** 🎉
 
 ✅ **Transaction ID:** ${sessionId || 'N/A'}
-💰 **Amount:** $135.00
+💰 **Amount:** $200.00
 📦 **Package:** ALL CONTENT INCLUDED
 ⏰ **Time:** ${new Date().toLocaleString()}
 
@@ -205,7 +205,15 @@ Please let me know if you need any assistance accessing your content.`;
         setVideos([]); // Reset videos array
         
         // Get video IDs first (ultra-fast operation - no metadata loading)
-        const allVideoIds = await VideoService.getVideoIds(SortOption.NEWEST);
+        const rawVideoIds = await VideoService.getVideoIds(SortOption.NEWEST);
+        
+        // Shuffle IDs using Fisher-Yates so each visit shows a different order
+        const allVideoIds = [...rawVideoIds];
+        for (let i = allVideoIds.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [allVideoIds[i], allVideoIds[j]] = [allVideoIds[j], allVideoIds[i]];
+        }
+        
         const totalPages = Math.ceil(allVideoIds.length / videosPerPage);
         setTotalPages(totalPages);
         

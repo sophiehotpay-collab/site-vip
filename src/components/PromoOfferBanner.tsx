@@ -27,7 +27,7 @@ const PromoOfferBanner = ({ telegramLink, telegramUsername, prefilledMessage }: 
   const [isWhopLoading, setIsWhopLoading] = useState(false);
   const { stripePublishableKey, whoApiKey, loading: configLoading } = useSiteConfig();
 
-  const interestMessage = prefilledMessage || "Hi! I'm interested in the $100 offer including all content. Could you guide me on how to pay?";
+  const interestMessage = prefilledMessage || "Hi! I'm interested in the $200 offer including all content. Could you guide me on how to pay?";
   const computedTelegramHref = (() => {
     try {
       if (telegramLink) return telegramLink;
@@ -43,7 +43,7 @@ const PromoOfferBanner = ({ telegramLink, telegramUsername, prefilledMessage }: 
     }
   })();
 
-  // Handle Stripe payment for $100 offer
+  // Handle Stripe payment for $200 offer
   const handleStripePayment = async () => {
     if (!stripePublishableKey) {
       alert('Stripe configuration is missing. Please contact support.');
@@ -66,12 +66,12 @@ const PromoOfferBanner = ({ telegramLink, telegramUsername, prefilledMessage }: 
       const randomProductName = productNames[Math.floor(Math.random() * productNames.length)];
       
       // Build success and cancel URLs (usando HashRouter)
-      const successUrl = `${window.location.origin}/#/payment-success?session_id={CHECKOUT_SESSION_ID}&payment_method=stripe&offer_type=all_content&price=100`;
+      const successUrl = `${window.location.origin}/#/payment-success?session_id={CHECKOUT_SESSION_ID}&payment_method=stripe&offer_type=all_content&price=200`;
       const cancelUrl = `${window.location.origin}/#/?payment_canceled=true`;
       
       // Create checkout session
       const sessionId = await StripeService.createCheckoutSession(
-        100, // $100 price
+        200, // $200 price
         'usd',
         randomProductName,
         successUrl,
@@ -89,7 +89,7 @@ const PromoOfferBanner = ({ telegramLink, telegramUsername, prefilledMessage }: 
     }
   };
 
-  // Handle Whop payment for $100 offer
+  // Handle Whop payment for $200 offer
   const handleWhopPayment = async () => {
     if (!whoApiKey) {
       alert('Whop configuration is missing. Please contact support.');
@@ -113,12 +113,12 @@ const PromoOfferBanner = ({ telegramLink, telegramUsername, prefilledMessage }: 
       
       // Build success and cancel URLs (usando HashRouter)
       // Nota: session_id será gerado automaticamente na página de sucesso
-      const successUrl = `${window.location.origin}/#/payment-success?payment_method=who&offer_type=all_content&price=100`;
+      const successUrl = `${window.location.origin}/#/payment-success?payment_method=who&offer_type=all_content&price=200`;
       const cancelUrl = `${window.location.origin}/#/?payment_canceled=true`;
       
       // Create checkout session
       const checkoutUrl = await WhoService.createCheckoutSession(
-        100, // $100 price
+        200, // $200 price
         'usd',
         randomProductName,
         successUrl,
@@ -187,7 +187,7 @@ const PromoOfferBanner = ({ telegramLink, telegramUsername, prefilledMessage }: 
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  🎉 Special Offer - All Content $100
+                  🎉 Special Offer - All Content $200
                 </Typography>
 
                 <Typography sx={{ fontSize: '0.85rem', color: theme => theme.palette.text.secondary, mb: 1.5 }}>
